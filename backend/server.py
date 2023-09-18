@@ -1,7 +1,13 @@
 # Required Imports
+import datetime
 import os
+import threading
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app
+
+from google.api_core.client_options import ClientOptions
+from google.cloud import firestore
+from google.cloud.firestore_v1.base_query import FieldFilter
 
 # Initialize Flask App
 app = Flask(__name__)
@@ -9,68 +15,40 @@ app = Flask(__name__)
 # Initialize Firestore DB
 cred = credentials.Certificate('chatbot.json')
 default_app = initialize_app(cred)
-db = firestore.client()
-todo_ref = db.collection('todos')
+db = firestore.Client()
+collection_name = 'Chatbot History'
+collection = db.collection(collection_name)
 
-@app.rout('/', methods=['POST'])
-@app.route('/add', methods=['POST'])
-def create():
-    """
-        create() : Add document to Firestore collection with request body
-        Ensure you pass a custom ID as part of json body in post request
-        e.g. json={'id': '1', 'title': 'Write a blog post'}
-    """
+
+@app.route('/', methods=['GET'])
+def root():
+    return 'hello world'
+
+# Add a new endpoint to add data to Firestore
+@app.route('/add_data', methods=['POST'])
+def add_data():
     try:
-        id = request.json['id']
-        todo_ref.document(id).set(request.json)
-        return jsonify({"success": True}), 200
+        # Parse the JSON data from the request
+        data = request.json
+
+        # Add a new document to the 'chat' collection with the parsed data
+        new_doc_ref, _ = collection.add(data)
+
+        # Return a success response with the ID of the newly created document
+        response = {
+            'message': 'Data added successfully',
+            'document_id': new_doc_ref.id
+        }
+
+        return jsonify(response), 200
     except Exception as e:
-        return f"An Error Occured: {e}"
-@app.route('/list', methods=['GET'])
-def read():
-    """
-        read() : Fetches documents from Firestore collection as JSON
-        todo : Return document that matches query ID
-        all_todos : Return all documents
-    """
-    try:
-        # Check if ID was passed to URL query
-        todo_id = request.args.get('id')    
-        if todo_id:
-            todo = todo_ref.document(todo_id).get()
-            return jsonify(todo.to_dict()), 200
-        else:
-            all_todos = [doc.to_dict() for doc in todo_ref.stream()]
-            return jsonify(all_todos), 200
-    except Exception as e:
-        return f"An Error Occured: {e}"
-@app.route('/update', methods=['POST', 'PUT'])
-def update():
-    """
-        update() : Update document in Firestore collection with request body
-        Ensure you pass a custom ID as part of json body in post request
-        e.g. json={'id': '1', 'title': 'Write a blog post today'}
-    """
-    try:
-        id = request.json['id']
-        todo_ref.document(id).update(request.json)
-        return jsonify({"success": True}), 200
-    except Exception as e:
-        return f"An Error Occured: {e}"
-@app.route('/delete', methods=['GET', 'DELETE'])
-def delete():
-    """
-        delete() : Delete a document from Firestore collection
-    """
-    try:
-        # Check for ID in URL query
-        todo_id = request.args.get('id')
-        todo_ref.document(todo_id).delete()
-        return jsonify({"success": True}), 200
-    except Exception as e:
-        return f"An Error Occured: {e}"
-    
+        # Handle any errors that occur during data insertion
+        response = {
+            'error': str(e)
+        }
+        return jsonify(response), 500
+
 port = int(os.environ.get('PORT', 8080))
 
 if __name__ == '__main__':
-    app.run(threaded=True, host='0.0.0.0', port=port)
+    app.run(threaded=True, host='0.0.0.0', port=port, debug=True)
