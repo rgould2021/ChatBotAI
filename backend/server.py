@@ -48,6 +48,10 @@ def add_data():
         }
         return jsonify(response), 500
 
+@app.route('/login', methods=['POST'])
+def login():
+    pass
+
 port = int(os.environ.get('PORT', 8080))
 
 if __name__ == '__main__':
