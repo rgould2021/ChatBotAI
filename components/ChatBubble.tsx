@@ -17,7 +17,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#DCF8C6',
+    backgroundColor: '#2986cc',
     padding: 10,
     margin: 5,
     borderRadius: 10,
