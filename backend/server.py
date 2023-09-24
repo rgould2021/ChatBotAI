@@ -1,4 +1,3 @@
-# Required Imports
 import datetime
 import os
 import threading
@@ -14,6 +13,7 @@ app = Flask(__name__)
 
 # Initialize Firestore DB
 cred = credentials.Certificate('chatbot.json')
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "chatbot.json"
 default_app = initialize_app(cred)
 db = firestore.Client()
 collection_name = 'Chatbot History'
@@ -24,6 +24,10 @@ collection = db.collection(collection_name)
 def root():
     return 'hello world'
 
+@app.route('/upload', methods=['GET'])
+def upload():
+    return 'upload'
+
 # Add a new endpoint to add data to Firestore
 @app.route('/add_data', methods=['POST'])
 def add_data():
@@ -32,7 +36,7 @@ def add_data():
         data = request.json
 
         # Add a new document to the 'chat' collection with the parsed data
-        new_doc_ref, _ = collection.add(data)
+        new_doc_ref = collection.add(data)
 
         # Return a success response with the ID of the newly created document
         response = {
@@ -51,4 +55,4 @@ def add_data():
 port = int(os.environ.get('PORT', 8080))
 
 if __name__ == '__main__':
-    app.run(threaded=True, host='0.0.0.0', port=port, debug=True)
+    app.run(threaded=True, host='0.0.0.0', port=port)
