@@ -42,4 +42,3 @@ expo-env.d.ts
 # @end expo-cli
 
 backend/env/
-backend/chatbot.json
