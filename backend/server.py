@@ -111,17 +111,27 @@ def signup():
 
 @app.route('/api/token')
 def token():
-    data = request.get_json()
-    # email = request.form.get('email')
-    # password = request.form.get('password')
-    email = data.get('email')
-    password = data.get('password')
+    email = request.form.get('email')
+    password = request.form.get('password')
     try:
         user = pb.auth().sign_in_with_email_and_password(email, password)
         jwt = user['idToken']
         return {'token': jwt}, 200
     except:
         return {'message': 'There was an error logging in'},400
+
+def check_token(f):
+    @wraps(f)
+    def wrap(*args,**kwargs):
+        if not request.headers.get('authorization'):
+            return {'message': 'No token provided'},400
+        try:
+            user = auth.verify_id_token(request.headers['authorization'])
+            request.user = user
+        except:
+            return {'message':'Invalid token provided.'},400
+        return f(*args, **kwargs)
+    return wrap
         
 
 
