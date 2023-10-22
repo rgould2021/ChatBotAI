@@ -16,7 +16,7 @@ import {
   Header,
   LearnMoreLinks,
   ReloadInstructions,
-} from 'react-native/Libraries/NewLoginScreenScreen';
+} from 'react-native/Libraries/NewAppScreen';
 
 const LoginScreen: React.FC = () => {
   const onPressLogin = () => {

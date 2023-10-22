@@ -1,6 +1,6 @@
-
 # app.py
 # Required Imports
+
 import os
 import json
 import pyrebase
