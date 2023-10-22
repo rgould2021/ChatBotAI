@@ -25,7 +25,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Skippy',
-          tabBarIcon: ({ color }) => <TabBarIcon name="qq" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="login" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>
@@ -45,7 +45,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="two"
         options={{
-          title: 'Chat',
+          title: 'Login',
           tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
         }}
       />
