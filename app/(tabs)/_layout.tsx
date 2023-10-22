@@ -42,13 +42,13 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* <Tabs.Screen
+      <Tabs.Screen
         name="two"
         options={{
           title: 'Chat',
           tabBarIcon: ({ color }) => <TabBarIcon name="users" color={color} />,
         }}
-      /> */}
+      />
     </Tabs>
   );
 }
