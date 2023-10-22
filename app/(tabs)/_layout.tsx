@@ -25,7 +25,7 @@ export default function TabLayout() {
         name="index"
         options={{
           title: 'Skippy',
-          tabBarIcon: ({ color }) => <TabBarIcon name="login" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="qq" color={color} />,
           headerRight: () => (
             <Link href="/modal" asChild>
               <Pressable>

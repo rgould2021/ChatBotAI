@@ -60,7 +60,7 @@ const LoginScreen: React.FC = () => {
         <Text style={styles.forgotAndSignUpText}>Forgot Password?</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={onPressLogin} style={styles.loginBtn}>
-        <Text style={styles.loginText}>LOGIN </Text>
+        <Text style={styles.inputText}>LOGIN </Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={onPressSignUp}>
         <Text style={styles.forgotAndSignUpText}>Signup</Text>
