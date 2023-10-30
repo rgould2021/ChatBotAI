@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import fetch from 'node-fetch';
 import {
   SafeAreaView,
   ScrollView,
@@ -30,6 +31,17 @@ const LoginScreen: React.FC = () => {
   const onPressSignUp = () => {
     // Do something about the signup operation
   };
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://172.16.226.93:8080/list');
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+  
 
   const [state, setState] = useState({
     email: '',

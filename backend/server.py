@@ -4,12 +4,14 @@
 import os
 import json
 import pyrebase
+from flask_cors import CORS
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app, auth
 
 
 # Initialize Flask App
 app = Flask(__name__)
+CORS(app)
 
 
 # Initialize Firestore DB
