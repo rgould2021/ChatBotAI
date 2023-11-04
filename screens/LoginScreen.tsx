@@ -20,8 +20,10 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 const LoginScreen: React.FC = () => {
+
   const onPressLogin = () => {
     // Do something about the login operation
+
   };
 
   const onPressForgotPassword = () => {
