@@ -16,19 +16,25 @@ const ChatScreen: React.FC = () => {
 
   const handleSendMessage = async (messageText: string) => {
     // Display the user message immediately
+
     const userMessage: Message = {
       id: messages.length + 1,
       content: messageText,
       timestamp: Date.now(),
-      role: 'user',
+      role: 'usr',
     };
+
     setMessages([...messages, userMessage]);
+    
+    console.log('user msgs:', userMessage.content)
+    console.log('msgs id:', userMessage.id)
 
     // Send user message to GPT-3 for a response
     try {
       // Initialize the OpenAI API client
       const openai = new OpenAI({
         apiKey: process.env.EXPO_PUBLIC_API_KEY, // Change this to your actual OpenAI API key
+        dangerouslyAllowBrowser: true,
       });
 
       const payload = {
@@ -62,6 +68,12 @@ const ChatScreen: React.FC = () => {
       };
 
       setMessages([...messages, chatbotMessage]);
+      console.log("GPT", chatbotMessage.id)
+      console.log('Messages:', messages)
+
+      // Add console.log
+      console.log('Chatbot Response:', chatbotMessage.content);
+
     } catch (error) {
       if (error instanceof OpenAI.APIError) {
         console.error(error.status);
