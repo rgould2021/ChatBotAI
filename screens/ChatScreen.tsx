@@ -6,8 +6,8 @@ import ChatInput from '../components/ChatInput';
 import { Message } from '../types';
 
 const initialMessages: Message[] = [
-  { id: 1, content: 'Hi!', timestamp: Date.now() - 5000 },
-  { id: 2, content: "I'm skippy, how may I assist?", timestamp: Date.now() - 3000 },
+  { id: 1, content: 'Hi!', timestamp: Date.now() - 5000, role: 'chatbot' }, 
+  { id: 2, content: "I'm skippy, how may I assist?", timestamp: Date.now() - 3000, role: 'chatbot'},
   // Add more initial messages as needed
 ];
 
@@ -16,19 +16,28 @@ const ChatScreen: React.FC = () => {
 
   const handleSendMessage = async (messageText: string) => {
     // Display the user message immediately
+
     const userMessage: Message = {
       id: messages.length + 1,
       content: messageText,
       timestamp: Date.now(),
+      role: 'usr',
     };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
+
+    // const updatedMessages = [...messages, userMessage];
+    // setMessages(updatedMessages);
+    
+    console.log('user msgs:', userMessage.content)
+    console.log('msgs id:', userMessage.id)
 
     // Send user message to GPT-3 for a response
     try {
       // Initialize the OpenAI API client
       const openai = new OpenAI({
         apiKey: process.env.EXPO_PUBLIC_API_KEY, // Change this to your actual OpenAI API key
+        dangerouslyAllowBrowser: true,
       });
 
       const payload = {
@@ -54,17 +63,19 @@ const ChatScreen: React.FC = () => {
 
       const responseData = await response.json();
 
-      //console.log(responseData.choices[0]?.message?.content);
-
       const chatbotMessage: Message = {
         id: messages.length + 2,
         content: responseData.choices[0]?.message?.content || "Sorry, I couldn't understand.",
         timestamp: Date.now(),
+        role: 'chatbot',
       };
 
       const updatedChat = [...updatedMessages, chatbotMessage];
       setMessages(updatedChat);
       
+      // Add console.log
+      console.log('Chatbot Response:', chatbotMessage.content);
+
     } catch (error) {
       if (error instanceof OpenAI.APIError) {
         console.error(error.status);

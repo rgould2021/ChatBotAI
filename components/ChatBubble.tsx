@@ -7,8 +7,36 @@ interface ChatBubbleProps {
 }
 
 const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
+
+  const userMessageStyles = StyleSheet.create({
+    container: {
+      backgroundColor: '#34B7F1',
+      padding: 10,
+      margin: 5,
+      borderRadius: 10,
+      alignSelf: 'flex-end',
+    },
+  });
+
+  const styles = StyleSheet.create({
+    container: {
+      backgroundColor: '#DCF8C6',
+      padding: 10,
+      margin: 5,
+      borderRadius: 10,
+      alignSelf: 'flex-start',
+    },
+
+    timestamp: {
+      fontSize: 12,
+      color: 'gray',
+      marginTop: 5,
+    },
+    
+  });
+
   return (
-    <View style={styles.container}>
+    <View style={message.role === 'usr' ? userMessageStyles.container : styles.container}>
       <Text>{message.content}</Text>
       <Text style={styles.timestamp}>{new Date(message.timestamp).toLocaleTimeString()}</Text>
     </View>
@@ -17,7 +45,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#DCF8C6',
+    backgroundColor: '#2986cc',
     padding: 10,
     margin: 5,
     borderRadius: 10,
@@ -29,5 +57,4 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
 });
-
 export default ChatBubble;
