@@ -27,7 +27,7 @@ const LoginScreen: React.FC = () => {
 
       const datarequest = {
         email: state.email,
-        passoword: state.password
+        password: state.password
       }
 
       const response = await fetch('http://127.0.0.1:8080/api/login',{

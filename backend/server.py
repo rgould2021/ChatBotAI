@@ -115,15 +115,11 @@ def signup():
 def token():
     print("API REQUEST")
     try:
-        email = request.form.get('email')
+        data = request.get_json()
+        email = data.get('email')
         print(email)
-        password = request.form.get('password')
+        password = data.get('password')
         print(password)
-        # print("email:",email)
-        # print("password", password)
-        # data = request.get_json()
-        # email = data.get('email')
-        # password = data.get('password')
         user = pb.auth().sign_in_with_email_and_password(email, password)
         jwt = user['idToken']
         return {'token': jwt}, 200
