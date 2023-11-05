@@ -109,10 +109,13 @@ def signup():
 
 #Api route to get a new token for a valid user
 
-@app.route('/api/token')
+@app.route('/api/token', methods=['POST'])
 def token():
-    email = request.form.get('email')
-    password = request.form.get('password')
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    print(email)
+    print(password)
     try:
         user = pb.auth().sign_in_with_email_and_password(email, password)
         jwt = user['idToken']
