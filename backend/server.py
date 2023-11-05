@@ -1,17 +1,15 @@
+
 # app.py
 # Required Imports
-
 import os
 import json
 import pyrebase
-from flask_cors import CORS
 from flask import Flask, request, jsonify
 from firebase_admin import credentials, firestore, initialize_app, auth
 
 
 # Initialize Flask App
 app = Flask(__name__)
-CORS(app)
 
 
 # Initialize Firestore DB
@@ -90,10 +88,11 @@ def delete():
 @app.route('/api/signup', methods=['POST'])
 def signup():
     try:
-        data = request.get_json()
-        email = data.get('email')
-        password = data.get('password')
-        print(data)
+        email = request.form.get('email')
+        password = request.form.get('password')
+        # data = request.get_json()
+        # email = data.get('email')
+        # password = data.get('password')
         
         if not email or not password:
             return {'message': 'Error: Missing email or password'}, 400
@@ -112,12 +111,14 @@ def signup():
 
 #Api route to get a new token for a valid user
 
-@app.route('/api/token')
+@app.route('/api/token', methods=['POST'])
 def token():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
     try:
+        email = request.form.get('email')
+        password = request.form.get('password')
+        # data = request.get_json()
+        # email = data.get('email')
+        # password = data.get('password')
         user = pb.auth().sign_in_with_email_and_password(email, password)
         jwt = user['idToken']
         return {'token': jwt}, 200
