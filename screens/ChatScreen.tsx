@@ -23,8 +23,11 @@ const ChatScreen: React.FC = () => {
       timestamp: Date.now(),
       role: 'usr',
     };
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
 
-    setMessages([...messages, userMessage]);
+    // const updatedMessages = [...messages, userMessage];
+    // setMessages(updatedMessages);
     
     console.log('user msgs:', userMessage.content)
     console.log('msgs id:', userMessage.id)
@@ -67,10 +70,9 @@ const ChatScreen: React.FC = () => {
         role: 'chatbot',
       };
 
-      setMessages([...messages, chatbotMessage]);
-      console.log("GPT", chatbotMessage.id)
-      console.log('Messages:', messages)
-
+      const updatedChat = [...updatedMessages, chatbotMessage];
+      setMessages(updatedChat);
+      
       // Add console.log
       console.log('Chatbot Response:', chatbotMessage.content);
 
