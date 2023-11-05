@@ -111,7 +111,7 @@ def signup():
 
 #Api route to get a new token for a valid user
 
-@app.route('/api/token', methods=['POST'])
+@app.route('/api/login', methods=['POST'])
 def token():
     try:
         email = request.form.get('email')

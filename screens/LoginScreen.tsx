@@ -21,9 +21,15 @@ import {
 
 const LoginScreen: React.FC = () => {
 
-  const onPressLogin = () => {
+  const onPressLogin = async () => {
     // Do something about the login operation
-
+    try {
+      const response = await fetch('http://192.168.1.251:8080/api/login');
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const onPressForgotPassword = () => {
