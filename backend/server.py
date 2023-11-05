@@ -113,9 +113,14 @@ def signup():
 
 @app.route('/api/login', methods=['POST'])
 def token():
+    print("API REQUEST")
     try:
         email = request.form.get('email')
+        print(email)
         password = request.form.get('password')
+        print(password)
+        # print("email:",email)
+        # print("password", password)
         # data = request.get_json()
         # email = data.get('email')
         # password = data.get('password')

@@ -18,15 +18,26 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+import { json } from 'stream/consumers';
 
 const LoginScreen: React.FC = () => {
 
   const onPressLogin = async () => {
-    // Do something about the login operation
     try {
-      const response = await fetch('http://192.168.1.251:8080/api/login');
-      const data = await response.json();
-      console.log(data);
+
+      const datarequest = {
+        email: state.email,
+        passoword: state.password
+      }
+
+      const response = await fetch('http://127.0.0.1:8080/api/login',{
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datarequest),
+      })
+      
     } catch (error) {
       console.error('Error:', error);
     }
@@ -42,7 +53,7 @@ const LoginScreen: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://172.16.226.93:8080/list');
+      const response = await fetch('http://192.168.1.251:8080/list');
       const data = await response.json();
       console.log(data);
     } catch (error) {
