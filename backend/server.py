@@ -88,11 +88,11 @@ def delete():
 @app.route('/api/signup', methods=['POST'])
 def signup():
     try:
-        email = request.form.get('email')
-        password = request.form.get('password')
-        # data = request.get_json()
-        # email = data.get('email')
-        # password = data.get('password')
+        # email = request.form.get('email')
+        # password = request.form.get('password')
+        data = request.get_json()
+        email = data.get('email')
+        password = data.get('password')
         
         if not email or not password:
             return {'message': 'Error: Missing email or password'}, 400

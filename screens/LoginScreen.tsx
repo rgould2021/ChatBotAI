@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import fetch from 'node-fetch';
 import {
   SafeAreaView,
@@ -21,51 +21,83 @@ import {
 import { json } from 'stream/consumers';
 
 const LoginScreen: React.FC = () => {
-
-  const onPressLogin = async () => {
-    try {
-
-      const datarequest = {
-        email: state.email,
-        password: state.password
-      }
-
-      const response = await fetch('http://127.0.0.1:8080/api/login',{
-        method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(datarequest),
-      })
-      
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-
-  const onPressForgotPassword = () => {
-    // Do something about the forgot password operation
-  };
-
-  const onPressSignUp = () => {
-    // Do something about the signup operation
-  };
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch('http://192.168.1.251:8080/list');
-      const data = await response.json();
-      console.log(data);
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
-  
-
   const [state, setState] = useState({
     email: '',
     password: '',
   });
+
+  const [loginMessage, setLoginMessage] = useState('');
+  const [signupMessage, setSignupMessage] = useState('');
+
+  const onPressLogin = async () => {
+    try {
+      const datarequest = {
+        email: state.email,
+        password: state.password,
+      };
+
+      const response = await fetch('http://127.0.0.1:8080/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datarequest),
+      });
+
+      if (response.status === 200) {
+        // Successful login
+        setLoginMessage('Login successful');
+      } else {
+        // Failed login
+        setLoginMessage('Login failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setLoginMessage('An error occurred during login');
+    }
+  };
+
+  const onPressForgotPassword = () => {
+    // Handle forgot password logic here
+  };
+
+  const onPressSignUp = async () => {
+    try {
+      const datarequest = {
+        email: state.email,
+        password: state.password,
+      };
+
+      const response = await fetch('http://127.0.0.1:8080/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datarequest),
+      });
+
+      if (response.status === 201) {
+        // Successful signup
+        setSignupMessage('Signup successful');
+      } else {
+        // Failed signup
+        setSignupMessage('Signup failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setSignupMessage('An error occurred during signup');
+    }
+  };
+
+  useEffect(() => {
+    // Clear login and signup messages after a few seconds
+    const timeout = setTimeout(() => {
+      setLoginMessage('');
+      setSignupMessage('');
+    }, 5000);
+
+    return () => clearTimeout(timeout);
+  }, [loginMessage, signupMessage]);
 
   return (
     <View style={styles.container}>
@@ -96,6 +128,8 @@ const LoginScreen: React.FC = () => {
       <TouchableOpacity onPress={onPressSignUp}>
         <Text style={styles.forgotAndSignUpText}>Signup</Text>
       </TouchableOpacity>
+
+      <Text style={styles.message}>{loginMessage || signupMessage}</Text>
     </View>
   );
 };
@@ -138,7 +172,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 40,
-    marginBottom: 10,
+  },
+  message: {
+    color: 'white',
+    marginTop: 20,
   },
 });
 
