@@ -8,7 +8,6 @@ import { Message } from '../types';
 const initialMessages: Message[] = [
   { id: 1, content: 'Hi!', timestamp: Date.now() - 5000, role: 'chatbot' }, 
   { id: 2, content: "I'm skippy, how may I assist?", timestamp: Date.now() - 3000, role: 'chatbot'},
-  // Add more initial messages as needed
 ];
 
 const ChatScreen: React.FC = () => {
