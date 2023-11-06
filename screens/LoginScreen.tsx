@@ -76,7 +76,7 @@ const LoginScreen: React.FC = () => {
         body: JSON.stringify(datarequest),
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         // Successful signup
         setSignupMessage('Signup successful');
       } else {
