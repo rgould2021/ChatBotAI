@@ -25,6 +25,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ message }) => {
       borderRadius: 10,
       alignSelf: 'flex-start',
     },
+
     timestamp: {
       fontSize: 12,
       color: 'gray',
