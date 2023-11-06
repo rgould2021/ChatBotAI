@@ -21,6 +21,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import { RootStackParamList } from '../components/type';
 import { StackNavigationProp } from '@react-navigation/stack';
+import SignupScreen from './SignupScreen';
  
 
 
