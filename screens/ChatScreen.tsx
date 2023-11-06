@@ -21,7 +21,7 @@ const ChatScreen: React.FC = () => {
       id: messages.length + 1,
       content: messageText,
       timestamp: Date.now(),
-      role: 'usr',
+      role: 'user',
     };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);

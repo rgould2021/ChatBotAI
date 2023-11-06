@@ -2,8 +2,7 @@ export interface Message {
     id: number;
     content: string;
     timestamp: number;
-    role: 'usr' | 'chatbot'; // Add the 'role' property
-  }
+    role: 'user' | 'chatbot'; // Add the 'role' property
   
   export interface Chat {
     id: number;
