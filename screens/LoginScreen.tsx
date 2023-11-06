@@ -94,7 +94,7 @@ const LoginScreen: React.FC = () => {
     const timeout = setTimeout(() => {
       setLoginMessage('');
       setSignupMessage('');
-    }, 5000);
+    }, 3000);
 
     return () => clearTimeout(timeout);
   }, [loginMessage, signupMessage]);
