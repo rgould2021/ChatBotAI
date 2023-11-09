@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StatusBar, View } from 'react-native';
+import  LoginScreen  from '../../screens/LoginScreen';
 import ChatScreen from '../../screens/ChatScreen';
-import LoginScreen from '../../screens/LoginScreen';
+import SignupScreen from '../../screens/SignupScreen';
+
+
+
 
 const App: React.FC = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar barStyle="dark-content" />
-      <ChatScreen />
+     <React.Fragment>
+      {isLoggedIn ? (
+        <SignupScreen setIsLoggedIn={setIsLoggedIn} isLoggedIn={isLoggedIn} />
+      ) : (
+        <LoginScreen setIsLoggedIn={setIsLoggedIn} />
+      )}
+    </React.Fragment>
     </View>
   );
 };

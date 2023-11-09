@@ -25,33 +25,77 @@ import SignupScreen from './SignupScreen';
  
 
 
-type LoginScreenProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'Login'>;
-};
 
 
 
-const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
-
-
-  const onPressLogin = () => {
-    //Do something about the login operation
-    //console.log('I am here')
-     
-  };
-
-  const onPressForgotPassword = () => {
-    //Do something about the forgot password operation
-  };
-
-  const onPressSignUp = () => {
-    // Do something about the signup operation
-   };
-
+const LoginScreen: React.FC = ({setIsLoggedIn}) => {
   const [state, setState] = useState({
     email: '',
     password: '',
   });
+
+  const [loginMessage, setLoginMessage] = useState('');
+  const [signupMessage, setSignupMessage] = useState('');
+
+  const onPressLogin = async () => {
+
+    try {
+      console.log('I am here')
+      const datarequest = {
+        email: state.email,
+        password: state.password,
+      };
+
+      const response = await fetch('http://127.0.0.1:8080/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datarequest),
+      });
+
+      if (response.status === 200) {
+        // Successful login
+        setLoginMessage('Login successful');
+      } else {
+        // Failed login
+        setLoginMessage('Login failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setLoginMessage('An error occurred during login');
+    }
+  };
+
+  const onPressForgotPassword = () => {
+    // Handle forgot password logic here
+  };
+
+
+  
+  // function onPressSignup(){
+  //   console.log('I am here')
+  //   setIsLoggedIn(true);
+     
+  // }
+
+  const onPressSignup = async () => {
+   // try {
+ 
+      setIsLoggedIn(true)
+    
+  }
+
+  // useEffect(() => {
+  //   // Clear login and signup messages after a few seconds
+  //   const timeout = setTimeout(() => {
+  //     setLoginMessage('');
+  //     setSignupMessage('');
+  //   }, 3000);
+
+  //   return () => clearTimeout(timeout);
+  // }, [loginMessage, signupMessage]);
+
 
   return (
     <View style={styles.container}>
@@ -76,20 +120,19 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
           placeholderTextColor="#003f5c"
           onChangeText={(text) => setState({ ...state, password: text })}
         />
-      </View>
-      
-      <TouchableOpacity onPress={onPressForgotPassword}>
-      <Text style={styles.forgotAndSignUpText}>Forgot your password?</Text>
-
-      </TouchableOpacity>
+      </View>    
       <TouchableOpacity onPress={onPressLogin} style={styles.loginBtn}>
         <Text style={styles.inputText}>LOGIN </Text>
       </TouchableOpacity>
-      <Text>Don't have an account? <Text onPress={() => {navigation.navigate('Signup')}}>Sign up</Text></Text>
+      <Text>Don't have an account? <Text onPress={onPressSignup}>Sign up</Text></Text>
     </View>
   );
 };
-/*<TouchableOpacity onPress={onPressSignUp}>
+/*<TouchableOpacity onPress={onPressForgotPassword}>
+      <Text style={styles.forgotAndSignUpText}>Forgot your password?</Text>
+
+      </TouchableOpacity>
+<TouchableOpacity onPress={onPressSignUp}>
         <Text style={styles.forgotAndSignUpText}>Signup</Text>
       </TouchableOpacity>*/
 const styles = StyleSheet.create({
@@ -147,3 +190,7 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
+function useEffect(arg0: () => () => void, arg1: string[]) {
+  throw new Error('Function not implemented.');
+}
+
