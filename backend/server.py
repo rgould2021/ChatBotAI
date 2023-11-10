@@ -1,6 +1,3 @@
-
-# app.py
-# Required Imports
 import os
 import json
 import pyrebase
@@ -88,8 +85,6 @@ def delete():
 @app.route('/api/signup', methods=['POST'])
 def signup():
     try:
-        # email = request.form.get('email')
-        # password = request.form.get('password')
         data = request.get_json()
         email = data.get('email')
         password = data.get('password')
@@ -110,7 +105,6 @@ def signup():
         return {'message': f'Error creating user: {str(e)}'}, 400
 
 #Api route to get a new token for a valid user
-
 @app.route('/api/login', methods=['POST'])
 def token():
     print("API REQUEST")

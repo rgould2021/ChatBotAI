@@ -3,6 +3,7 @@ export interface Message {
     content: string;
     timestamp: number;
     role: 'user' | 'chatbot'; // Add the 'role' property
+  }
   
   export interface Chat {
     id: number;
