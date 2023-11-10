@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import fetch from 'node-fetch';
 import {
   SafeAreaView,
   ScrollView,
@@ -18,17 +19,16 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
+
 import LinearGradient from 'react-native-linear-gradient';
 import { RootStackParamList } from '../components/type';
 import { StackNavigationProp } from '@react-navigation/stack';
 import SignupScreen from './SignupScreen';
  
-
-
-
-
-
+        
+        
 const LoginScreen: React.FC = ({setIsLoggedIn}) => {
+
   const [state, setState] = useState({
     email: '',
     password: '',
@@ -70,8 +70,6 @@ const LoginScreen: React.FC = ({setIsLoggedIn}) => {
   const onPressForgotPassword = () => {
     // Handle forgot password logic here
   };
-
-
   
   // function onPressSignup(){
   //   console.log('I am here')
@@ -193,4 +191,3 @@ export default LoginScreen;
 function useEffect(arg0: () => () => void, arg1: string[]) {
   throw new Error('Function not implemented.');
 }
-

@@ -4,9 +4,6 @@ import  LoginScreen  from '../../screens/LoginScreen';
 import ChatScreen from '../../screens/ChatScreen';
 import SignupScreen from '../../screens/SignupScreen';
 
-
-
-
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 

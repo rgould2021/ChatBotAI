@@ -8,7 +8,6 @@ import { Message } from '../types';
 const initialMessages: Message[] = [
   { id: 1, content: 'Hi!', timestamp: Date.now() - 5000, role: 'chatbot' }, 
   { id: 2, content: "I'm skippy, how may I assist?", timestamp: Date.now() - 3000, role: 'chatbot'},
-  // Add more initial messages as needed
 ];
 
 const ChatScreen: React.FC = () => {
@@ -16,6 +15,7 @@ const ChatScreen: React.FC = () => {
 
   const handleSendMessage = async (messageText: string) => {
     // Display the user message immediately
+
     const userMessage: Message = {
       id: messages.length + 1,
       content: messageText,
@@ -29,10 +29,11 @@ const ChatScreen: React.FC = () => {
       // Initialize the OpenAI API client
       const openai = new OpenAI({
         apiKey: process.env.EXPO_PUBLIC_API_KEY, // Change this to your actual OpenAI API key
+        dangerouslyAllowBrowser: true,
       });
 
       const payload = {
-        model: "gpt-3.5-turbo",
+        model: process.env.EXPO_CHAT_GPT,
         messages: [
           {
             role: "user",
@@ -60,8 +61,9 @@ const ChatScreen: React.FC = () => {
         timestamp: Date.now(),
         role: 'chatbot',
       };
-
-      setMessages([...messages, chatbotMessage]);
+      const updatedChat = [...updatedMessages, chatbotMessage];
+      setMessages(updatedChat);
+      
     } catch (error) {
       if (error instanceof OpenAI.APIError) {
         console.error(error.status);
