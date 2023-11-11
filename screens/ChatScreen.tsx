@@ -22,7 +22,8 @@ const ChatScreen: React.FC = () => {
       timestamp: Date.now(),
       role: 'user',
     };
-    setMessages([...messages, userMessage]);
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
 
     // Send user message to GPT-3 for a response
     try {
@@ -61,9 +62,10 @@ const ChatScreen: React.FC = () => {
         timestamp: Date.now(),
         role: 'chatbot',
       };
+
       const updatedChat = [...updatedMessages, chatbotMessage];
       setMessages(updatedChat);
-      
+
     } catch (error) {
       if (error instanceof OpenAI.APIError) {
         console.error(error.status);
