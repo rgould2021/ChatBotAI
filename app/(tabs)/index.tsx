@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StatusBar, View } from 'react-native';
 import  LoginScreen  from '../../screens/LoginScreen';
 import ChatScreen from '../../screens/ChatScreen';
+import LoginScreen from '../../screens/LoginScreen';
 import SignupScreen from '../../screens/SignupScreen';
 
 const App: React.FC = () => {

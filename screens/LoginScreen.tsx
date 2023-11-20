@@ -25,8 +25,6 @@ import { RootStackParamList } from '../components/type';
 import { StackNavigationProp } from '@react-navigation/stack';
 import SignupScreen from './SignupScreen';
  
-        
-        
 const LoginScreen: React.FC = ({setIsLoggedIn}) => {
 
   const [state, setState] = useState({
@@ -38,9 +36,7 @@ const LoginScreen: React.FC = ({setIsLoggedIn}) => {
   const [signupMessage, setSignupMessage] = useState('');
 
   const onPressLogin = async () => {
-
     try {
-      console.log('I am here')
       const datarequest = {
         email: state.email,
         password: state.password,
@@ -70,38 +66,48 @@ const LoginScreen: React.FC = ({setIsLoggedIn}) => {
   const onPressForgotPassword = () => {
     // Handle forgot password logic here
   };
-  
-  // function onPressSignup(){
-  //   console.log('I am here')
-  //   setIsLoggedIn(true);
-     
-  // }
 
-  const onPressSignup = async () => {
-   // try {
- 
-      setIsLoggedIn(true)
-    
-  }
+  const onPressSignUp = async () => {
+    try {
+      const datarequest = {
+        email: state.email,
+        password: state.password,
+      };
 
-  // useEffect(() => {
-  //   // Clear login and signup messages after a few seconds
-  //   const timeout = setTimeout(() => {
-  //     setLoginMessage('');
-  //     setSignupMessage('');
-  //   }, 3000);
+      const response = await fetch('http://127.0.0.1:8080/api/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(datarequest),
+      });
 
-  //   return () => clearTimeout(timeout);
-  // }, [loginMessage, signupMessage]);
+      if (response.status === 200) {
+        // Successful signup
+        setSignupMessage('Signup successful');
+      } else {
+        // Failed signup
+        setSignupMessage('Signup failed');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      setSignupMessage('An error occurred during signup');
+    }
+  };
 
+  useEffect(() => {
+    // Clear login and signup messages after a few seconds
+    const timeout = setTimeout(() => {
+      setLoginMessage('');
+      setSignupMessage('');
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }, [loginMessage, signupMessage]);
 
   return (
     <View style={styles.container}>
-      
-
-      <Image source={require("../assets/images/LifePathLogo.png")} style={styles.image} />
-
-      <Text style={styles.title}>Login</Text>
+      <Text style={styles.title}>Login Screen</Text>
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}

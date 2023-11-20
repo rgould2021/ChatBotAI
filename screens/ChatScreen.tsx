@@ -22,6 +22,7 @@ const ChatScreen: React.FC = () => {
       timestamp: Date.now(),
       role: 'user',
     };
+    
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
 
@@ -34,7 +35,7 @@ const ChatScreen: React.FC = () => {
       });
 
       const payload = {
-        model: process.env.EXPO_CHAT_GPT,
+        model: process.env.EXPO_GPT_MODEL,
         messages: [
           {
             role: "user",
@@ -45,7 +46,7 @@ const ChatScreen: React.FC = () => {
 
       const headers = {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.EXPO_PUBLIC_API_KEY}`, // Change this to your actual OpenAI API key
+        "Authorization": `Bearer ${process.env.EXPO_PUBLIC_API_KEY2}`, // Change this to your actual OpenAI API key
       };
 
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
