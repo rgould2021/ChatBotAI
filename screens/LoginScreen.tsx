@@ -128,7 +128,7 @@ const LoginScreen: React.FC = ({setIsLoggedIn}) => {
       <TouchableOpacity onPress={onPressLogin} style={styles.loginBtn}>
         <Text style={styles.inputText}>LOGIN </Text>
       </TouchableOpacity>
-      <Text>Don't have an account? <Text onPress={onPressSignup}>Sign up</Text></Text>
+      <Text>Don't have an account? <Text onPress={onPressSignUp}>Sign up</Text></Text>
     </View>
   );
 };
@@ -194,6 +194,7 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
-function useEffect(arg0: () => () => void, arg1: string[]) {
-  throw new Error('Function not implemented.');
-}
+
+// function useEffect(arg0: () => () => void, arg1: string[]) {
+//   throw new Error('Function not implemented.');
+// }
