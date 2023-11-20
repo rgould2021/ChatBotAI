@@ -10,11 +10,13 @@ export default function SignupScreen(props: { navigation: { navigate: (arg0: str
  
 
 const [registerdata, setRegisterData] = useState({
-       firstName : '',
-       lastName : '',
+      // commenting out the name and confirm password for now as the API end point
+      // is expecting only two for the request.
+      // firstName : '',
+      // lastName : '',
        email : '',
        password : '',
-       confirmPassword: ''
+     //  confirmPassword: ''
 })
 
 const [signupMessage, setSignupMessage] = useState<string | null>(null);;
@@ -27,38 +29,29 @@ const [loginMessage, setLoginMessage] = useState<string | null>(null);;
       try {
               
                   
-            if( registerdata.firstName == '' || registerdata.lastName == '' || registerdata.email == ''
-                || registerdata.password == '' || registerdata.confirmPassword =='')
+            if(registerdata.email == '' || registerdata.password == '')
               {
-                setSignupMessage('All the fields are required for registration');
+                setSignupMessage('An email and a password must be supplied');
                   return;
               }
               else
               {
-                    if (registerdata.password != registerdata.confirmPassword) 
-                    {
-                        setSignupMessage('Password and confirm Password should be the same');
-                        return;
-                    }
-                    else
-                    {
-                      
-                        const response = await fetch('http://127.0.0.1:8080/api/signup', {
-                        method: 'POST',
-                        headers: {
-                          'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(registerdata),
-                      });
+                  
+                    const response = await fetch('http://127.0.0.1:8080/api/signup', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registerdata),
+                    });
 
-                      if (response.status === 200) {
-                        props.navigation.navigate('LoginScreen')
-                        setSignupMessage('Signup successful');
-                      } else {
-                          setSignupMessage('Signup failed');
-                      }
-                
+                    if (response.status === 200) {
+                      props.navigation.navigate('LoginScreen')
+                      setSignupMessage('Signup successful');
+                    } else {
+                        setSignupMessage('Signup failed');
                     }
+
                 }
            } catch (error) {
                 setSignupMessage('An error occurred during signup');  
@@ -83,12 +76,12 @@ const [loginMessage, setLoginMessage] = useState<string | null>(null);;
           {
                     signupMessage ? <Text style={{color: 'red', fontSize: 15}}>{signupMessage}</Text> : null
           }
-          <Field style = {styles.inputText} placeholder="First Name" keyboardType={'default'} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, firstName: text })}/>
-          <Field style = {styles.inputText} placeholder="Last Name" keyboardType={'email-address'} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, lastName: text })}/>
+          {/* <Field style = {styles.inputText} placeholder="First Name" keyboardType={'default'} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, firstName: text })}/>
+          <Field style = {styles.inputText} placeholder="Last Name" keyboardType={'email-address'} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, lastName: text })}/> */}
           <Field style = {styles.inputText} placeholder="Email" keyboardType={'number-pad'} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, email: text })}/>
           <Field style = {styles.inputText} placeholder="Password" secureTextEntry={true} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, password: text })}/>
-          <Field style = {styles.inputText} placeholder="Confirm Password" secureTextEntry={true} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, confirmPassword: text })}/>
-    
+          {/* <Field style = {styles.inputText} placeholder="Confirm Password" secureTextEntry={true} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, confirmPassword: text })}/>
+     */}
           <TouchableOpacity onPress={onPressSignup} style={styles.loginBtn}>
             <Text style={styles.inputText}>Register </Text>
           </TouchableOpacity>
