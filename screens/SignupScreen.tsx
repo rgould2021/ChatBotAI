@@ -1,155 +1,95 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
-  TextInput,
-  TouchableOpacity,
-  Image
-} from 'react-native';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import LinearGradient from 'react-native-linear-gradient';
-import { RootStackParamList } from '../components/type';
-import { StackNavigationProp } from '@react-navigation/stack';
+  TouchableOpacity} from 'react-native';
+import Field from '../components/Field';
+
+export default function SignupScreen(props: { navigation: { navigate: (arg0: string) => void; }; }) {
  
 
-const SignupScreen: React.FC  = ({ setIsLoggedIn, isLoggedIn }) => {
+const [registerdata, setRegisterData] = useState({
+      // commenting out the name and confirm password for now as the API end point
+      // is expecting only two for the request.
+      // firstName : '',
+      // lastName : '',
+       email : '',
+       password : '',
+     //  confirmPassword: ''
+})
+
+const [signupMessage, setSignupMessage] = useState<string | null>(null);;
+const [loginMessage, setLoginMessage] = useState<string | null>(null);;
+
  
-
-const [firstName, setFirstName] = useState("")
-const [lastName, setLastName] = useState("")
-const [email, setEmail] = useState("")
-const [password, setPassword] = useState("")
-const [confirmPassword, setConfirmPassword] = useState("")
-
-  const [loginMessage, setLoginMessage] = useState('');
-  const [signupMessage, setSignupMessage] = useState('');
-
-
-
-  function onPressLogin() {
-    if(isLoggedIn)
-    setIsLoggedIn(false);
-}
-
-   
+ 
  const onPressSignup = async () => {
       // Do something about the signup operation
       try {
+              
+                  
+            if(registerdata.email == '' || registerdata.password == '')
+              {
+                setSignupMessage('An email and a password must be supplied');
+                  return;
+              }
+              else
+              {
+                  
+                    const response = await fetch('http://127.0.0.1:8080/api/signup', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(registerdata),
+                    });
 
-               const datarequest = {
-                firstname:String,
-                lastname:String,
-                email:String,
-                password:String,
-                confirmpassword:String
-          };
-    
+                    if (response.status === 200) {
+                      props.navigation.navigate('LoginScreen')
+                      setSignupMessage('Signup successful');
+                    } else {
+                        setSignupMessage('Signup failed');
+                    }
 
-    
-          const response = await fetch('http://127.0.0.1:8080/api/signup', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(datarequest),
-          });
-          if (response.status === 200) {
-            // Successful signup
-          //  setSignupMessage('Signup successful');
-          } else {
-            // Failed signup
-            //setSignupMessage('Signup failed');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-          //setSignupMessage('An error occurred during signup');
-         }
-    };
-    
- 
+                }
+           } catch (error) {
+                setSignupMessage('An error occurred during signup');  
+           }    
+    }
 
-  // useEffect(() => {
-  //   // Clear login and signup messages after a few seconds
-  //   const timeout = setTimeout(() => {
-  //     setLoginMessage('');
-  //     setSignupMessage('');
-  //   }, 3000);
+  useEffect(() => {
+    // Clear login and signup messages after a few seconds
+    const timeout = setTimeout(() => {
+       setLoginMessage('');
+      setSignupMessage('');
+    }, 3000);
 
-  //   return () => clearTimeout(timeout);
-  // }, [loginMessage, signupMessage]);
+    return () => clearTimeout(timeout);
+  }, [loginMessage, signupMessage]);
 
   //<Image source={require("../assets/images/LifePathLogo.png")} style={styles.image} />
 
   return (
     <View style={styles.container}>
-
-
-      <Text style={styles.title}>Signup</Text>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="First Name"
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setFirstName(text)}
-        />
+          <Text style={styles.title}>Signup</Text>
+          {
+                    signupMessage ? <Text style={{color: 'red', fontSize: 15}}>{signupMessage}</Text> : null
+          }
+          {/* <Field style = {styles.inputText} placeholder="First Name" keyboardType={'default'} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, firstName: text })}/>
+          <Field style = {styles.inputText} placeholder="Last Name" keyboardType={'email-address'} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, lastName: text })}/> */}
+          <Field style = {styles.inputText} placeholder="Email" keyboardType={'number-pad'} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, email: text })}/>
+          <Field style = {styles.inputText} placeholder="Password" secureTextEntry={true} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, password: text })}/>
+          {/* <Field style = {styles.inputText} placeholder="Confirm Password" secureTextEntry={true} onPressIn={() => setSignupMessage(null)} onChangeText={(text: string) => setRegisterData({ ...registerdata, confirmPassword: text })}/>
+     */}
+          <TouchableOpacity onPress={onPressSignup} style={styles.loginBtn}>
+            <Text style={styles.inputText}>Register </Text>
+          </TouchableOpacity>
+          <Text>have an account? <Text onPress={() => props.navigation.navigate('LoginScreen')}>Login</Text></Text>
       </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Last Name"
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setLastName(text)}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Email"
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setEmail(text)}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setPassword(text)}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Confirm Password"
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setConfirmPassword(text)}
-        />
-      </View>
-      <TouchableOpacity onPress={onPressSignup} style={styles.loginBtn}>
-        <Text style={styles.inputText}>Register </Text>
-      </TouchableOpacity>
-      <Text>have an account? <Text onPress={onPressLogin}>Login</Text></Text>
-    </View>
     );
   }
-/*<TouchableOpacity onPress={onPressForgotPassword}>
-      <Text style={styles.forgotAndSignUpText}>Forgot your password?</Text>
 
-      </TouchableOpacity>
-<TouchableOpacity onPress={onPressSignUp}>
-        <Text style={styles.forgotAndSignUpText}>Signup</Text>
-      </TouchableOpacity>*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -203,7 +143,3 @@ const styles = StyleSheet.create({
         top: 50,
   },*/
 });
-
-
-
-export default SignupScreen;

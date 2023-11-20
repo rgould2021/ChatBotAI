@@ -1,100 +1,71 @@
-import React, { useState, useEffect } from 'react';
-import fetch from 'node-fetch';
+import React, { useEffect, useState } from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
   View,
   TextInput,
   TouchableOpacity,
   Image
 } from 'react-native';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-import LinearGradient from 'react-native-linear-gradient';
-import { RootStackParamList } from '../components/type';
-import { StackNavigationProp } from '@react-navigation/stack';
-import SignupScreen from './SignupScreen';
+import Field from '../components/Field';
  
-const LoginScreen: React.FC = ({setIsLoggedIn}) => {
 
-  const [state, setState] = useState({
+export default function LoginScreen (props: any) {
+  const [logindata, setLoginData] = useState({
     email: '',
     password: '',
   });
 
-  const [loginMessage, setLoginMessage] = useState('');
-  const [signupMessage, setSignupMessage] = useState('');
+  const [loginMessage, setLoginMessage] = useState<string | null>(null);
+  const [signupMessage, setSignupMessage] = useState<string | null>(null);
 
-  const onPressLogin = async () => {
+  function isValidEmail(email: string) {
+    const pattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    return pattern.test(email);
+  }
+
+   const onPressLogin = async () => {
+
     try {
-      const datarequest = {
-        email: state.email,
-        password: state.password,
-      };
+          const logindatarequest = {
+            email: logindata.email,
+            password: logindata.password,
+          };
 
-      const response = await fetch('http://127.0.0.1:8080/api/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(datarequest),
-      });
+          if(isValidEmail(logindatarequest.email)) {
 
-      if (response.status === 200) {
-        // Successful login
-        setLoginMessage('Login successful');
-      } else {
-        // Failed login
-        setLoginMessage('Login failed');
+            
+              const response = await fetch('http://127.0.0.1:8080/api/login', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(logindatarequest),
+              });
+
+              if (response.status === 200) {
+                props.navigation.navigate('ChatScreen')
+                setLoginMessage('Login successful');
+              } else {
+                setLoginMessage('Login failed');
+              }
+            }
+            else {
+                setLoginMessage(`${logindatarequest.email} is not a valid email`);
+                return;
+              }
+      }  
+       
+      catch(error){
+        setLoginMessage('An error occurred while login');  
       }
-    } catch (error) {
-      console.error('Error:', error);
-      setLoginMessage('An error occurred during login');
-    }
-  };
+    }    
 
   const onPressForgotPassword = () => {
     // Handle forgot password logic here
   };
-
-  const onPressSignUp = async () => {
-    try {
-      const datarequest = {
-        email: state.email,
-        password: state.password,
-      };
-
-      const response = await fetch('http://127.0.0.1:8080/api/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(datarequest),
-      });
-
-      if (response.status === 200) {
-        // Successful signup
-        setSignupMessage('Signup successful');
-      } else {
-        // Failed signup
-        setSignupMessage('Signup failed');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      setSignupMessage('An error occurred during signup');
-    }
-  };
-
+ 
+ 
   useEffect(() => {
     // Clear login and signup messages after a few seconds
     const timeout = setTimeout(() => {
@@ -105,40 +76,30 @@ const LoginScreen: React.FC = ({setIsLoggedIn}) => {
     return () => clearTimeout(timeout);
   }, [loginMessage, signupMessage]);
 
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Login Screen</Text>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          placeholder="Email"
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setState({ ...state, email: text })}
-        />
-      </View>
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.inputText}
-          secureTextEntry
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
-          onChangeText={(text) => setState({ ...state, password: text })}
-        />
-      </View>    
+      
+
+      <Image source={require("../assets/images/LifePathLogo.png")} style={styles.image} />
+
+      <Text style={styles.title}>Login</Text>
+      { 
+                    loginMessage ? <Text style={{color: 'red', fontSize: 15}}>{loginMessage}</Text> : null
+ 
+      }
+      <Field style = {styles.inputText} placeholder="Email" keyboardType={'number-pad'} onPressIn={() => setLoginMessage(null)} onChangeText={(text: string) => setLoginData({ ...logindata, email: text })}/>
+      <Field style = {styles.inputText} placeholder="Password" secureTextEntry={true} onPressIn={() => setLoginMessage(null)} onChangeText={(text: string) => setLoginData({ ...logindata, password: text })}/>
+      
       <TouchableOpacity onPress={onPressLogin} style={styles.loginBtn}>
         <Text style={styles.inputText}>LOGIN </Text>
       </TouchableOpacity>
-      <Text>Don't have an account? <Text onPress={onPressSignUp}>Sign up</Text></Text>
+      <Text>Don't have an account? <Text onPress={()=>props.navigation.navigate('SignupScreen')}>Sign up</Text></Text>
     </View>
   );
-};
-/*<TouchableOpacity onPress={onPressForgotPassword}>
-      <Text style={styles.forgotAndSignUpText}>Forgot your password?</Text>
+}
 
-      </TouchableOpacity>
-<TouchableOpacity onPress={onPressSignUp}>
-        <Text style={styles.forgotAndSignUpText}>Signup</Text>
-      </TouchableOpacity>*/
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -194,7 +155,3 @@ const styles = StyleSheet.create({
 });
 
 export default LoginScreen;
-
-// function useEffect(arg0: () => () => void, arg1: string[]) {
-//   throw new Error('Function not implemented.');
-// }

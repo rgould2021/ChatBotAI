@@ -63,10 +63,9 @@ const ChatScreen: React.FC = () => {
         timestamp: Date.now(),
         role: 'chatbot',
       };
-
       const updatedChat = [...updatedMessages, chatbotMessage];
       setMessages(updatedChat);
-
+      
     } catch (error) {
       if (error instanceof OpenAI.APIError) {
         console.error(error.status);
