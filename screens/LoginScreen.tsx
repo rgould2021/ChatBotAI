@@ -10,6 +10,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Image
 } from 'react-native';
 import {
   Colors,
@@ -18,9 +19,14 @@ import {
   LearnMoreLinks,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-import { json } from 'stream/consumers';
 
-const LoginScreen: React.FC = () => {
+import LinearGradient from 'react-native-linear-gradient';
+import { RootStackParamList } from '../components/type';
+import { StackNavigationProp } from '@react-navigation/stack';
+import SignupScreen from './SignupScreen';
+ 
+const LoginScreen: React.FC = ({setIsLoggedIn}) => {
+
   const [state, setState] = useState({
     email: '',
     password: '',
@@ -118,65 +124,76 @@ const LoginScreen: React.FC = () => {
           placeholderTextColor="#003f5c"
           onChangeText={(text) => setState({ ...state, password: text })}
         />
-      </View>
-      <TouchableOpacity onPress={onPressForgotPassword}>
-        <Text style={styles.forgotAndSignUpText}>Forgot Password?</Text>
-      </TouchableOpacity>
+      </View>    
       <TouchableOpacity onPress={onPressLogin} style={styles.loginBtn}>
         <Text style={styles.inputText}>LOGIN </Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={onPressSignUp}>
-        <Text style={styles.forgotAndSignUpText}>Signup</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.message}>{loginMessage || signupMessage}</Text>
+      <Text>Don't have an account? <Text onPress={onPressSignup}>Sign up</Text></Text>
     </View>
   );
 };
+/*<TouchableOpacity onPress={onPressForgotPassword}>
+      <Text style={styles.forgotAndSignUpText}>Forgot your password?</Text>
 
+      </TouchableOpacity>
+<TouchableOpacity onPress={onPressSignUp}>
+        <Text style={styles.forgotAndSignUpText}>Signup</Text>
+      </TouchableOpacity>*/
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#4FD3DA',
+    backgroundColor: '#74C365',
     alignItems: 'center',
     justifyContent: 'center',
   },
   title: {
     fontWeight: 'bold',
-    fontSize: 50,
-    color: '#fb5b5a',
+    fontSize: 30,
+    color: 'white',
     marginBottom: 40,
   },
   inputView: {
     width: '80%',
-    backgroundColor: '#3AB4BA',
-    borderRadius: 25,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 5,
+    borderColor: 'black',
+    borderWidth: 1,
     height: 50,
     marginBottom: 20,
     justifyContent: 'center',
     padding: 20,
   },
   inputText: {
-    height: 50,
-    color: 'white',
+    height: 15,
+    color: 'black',
+    fontWeight: 'bold'
   },
   forgotAndSignUpText: {
-    color: 'white',
-    fontSize: 11,
+    color: 'black',
+    fontSize: 15,
+    paddingLeft: 15
   },
   loginBtn: {
     width: '80%',
-    backgroundColor: '#fb5b5a',
-    borderRadius: 25,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 5,
+    borderColor: 'black',
+    borderWidth: 1,
     height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 40,
+    marginBottom: 10,
   },
-  message: {
-    color: 'white',
-    marginTop: 20,
+  image: {
+        width: 100,
+        height: 100,
+        position: 'absolute',
+        top: 50,
   },
 });
 
 export default LoginScreen;
+function useEffect(arg0: () => () => void, arg1: string[]) {
+  throw new Error('Function not implemented.');
+}
