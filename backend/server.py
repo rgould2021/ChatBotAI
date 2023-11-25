@@ -1,6 +1,3 @@
-
-# app.py
-# Required Imports
 import os
 import json
 import pyrebase
@@ -108,12 +105,15 @@ def signup():
         return {'message': f'Error creating user: {str(e)}'}, 400
 
 #Api route to get a new token for a valid user
-
-@app.route('/api/token')
+@app.route('/api/login', methods=['POST'])
 def token():
-    email = request.form.get('email')
-    password = request.form.get('password')
+    print("API REQUEST")
     try:
+        data = request.get_json()
+        email = data.get('email')
+        print(email)
+        password = data.get('password')
+        print(password)
         user = pb.auth().sign_in_with_email_and_password(email, password)
         jwt = user['idToken']
         return {'token': jwt}, 200

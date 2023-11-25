@@ -8,7 +8,6 @@ import { Message } from '../types';
 const initialMessages: Message[] = [
   { id: 1, content: 'Hi!', timestamp: Date.now() - 5000, role: 'chatbot' }, 
   { id: 2, content: "I'm skippy, how may I assist?", timestamp: Date.now() - 3000, role: 'chatbot'},
-  // Add more initial messages as needed
 ];
 
 const ChatScreen: React.FC = () => {
@@ -16,23 +15,27 @@ const ChatScreen: React.FC = () => {
 
   const handleSendMessage = async (messageText: string) => {
     // Display the user message immediately
+
     const userMessage: Message = {
       id: messages.length + 1,
       content: messageText,
       timestamp: Date.now(),
       role: 'user',
     };
-    setMessages([...messages, userMessage]);
+    
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
 
     // Send user message to GPT-3 for a response
     try {
       // Initialize the OpenAI API client
       const openai = new OpenAI({
         apiKey: process.env.EXPO_PUBLIC_API_KEY, // Change this to your actual OpenAI API key
+        dangerouslyAllowBrowser: true,
       });
 
       const payload = {
-        model: "gpt-3.5-turbo",
+        model: process.env.EXPO_GPT_MODEL,
         messages: [
           {
             role: "user",
@@ -43,7 +46,7 @@ const ChatScreen: React.FC = () => {
 
       const headers = {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.EXPO_PUBLIC_API_KEY}`, // Change this to your actual OpenAI API key
+        "Authorization": `Bearer ${process.env.EXPO_PUBLIC_API_KEY2}`, // Change this to your actual OpenAI API key
       };
 
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
@@ -60,8 +63,9 @@ const ChatScreen: React.FC = () => {
         timestamp: Date.now(),
         role: 'chatbot',
       };
-
-      setMessages([...messages, chatbotMessage]);
+      const updatedChat = [...updatedMessages, chatbotMessage];
+      setMessages(updatedChat);
+      
     } catch (error) {
       if (error instanceof OpenAI.APIError) {
         console.error(error.status);

@@ -1,12 +1,15 @@
-import React from 'react';
-import { StatusBar, View } from 'react-native';
-import ChatScreen from '../../screens/ChatScreen';
+import React, { useState } from 'react';
+import { View } from 'react-native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Navigation from '../../screens/Navigation';
+const Stack = createNativeStackNavigator();
 
+ 
 const App: React.FC = () => {
+
   return (
     <View style={{ flex: 1 }}>
-      <StatusBar barStyle="dark-content" />
-      <ChatScreen />
+      <Navigation />
     </View>
   );
 };
