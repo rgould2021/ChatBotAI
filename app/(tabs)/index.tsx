@@ -13,5 +13,4 @@ const App: React.FC = () => {
     </View>
   );
 };
-
 export default App;
