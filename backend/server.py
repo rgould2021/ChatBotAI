@@ -1,12 +1,19 @@
 import os
 import json
 import pyrebase
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory, render_template, url_for
+from flask_restful import Api, Resource, reqparse
+from flask_cors import CORS #comment this on deployment
+# from api.HelloApiHandler import HelloApiHandler importing from folder named api and python file HelloApiHandler
 from firebase_admin import credentials, firestore, initialize_app, auth
 
 
 # Initialize Flask App
-app = Flask(__name__)
+app = Flask(__name__, static_folder='chatadmin/build')
+CORS(app) #comment this on deployment
+
+#npm run build
+#npm start
 
 
 # Initialize Firestore DB
@@ -16,6 +23,15 @@ db = firestore.client()
 history = db.collection('Chat History')
 
 pb = pyrebase.initialize_app(json.load(open('firebase_sdk.json')))
+
+# Serve React App
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def serve(path):
+    if path != "" and os.path.exists(app.static_folder + '/' + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
 
 
 @app.route('/add', methods=['POST'])
@@ -65,22 +81,6 @@ def delete():
         return jsonify({"success": True}), 200
     except Exception as e:
         return f"An Error Occured: {e}"
-
-#Api route to sign up a new user
-# @app.route('/api/signup')
-# def signup():
-#     email = request.form.get('email')
-#     password = request.form.get('password')
-#     if email is None or password is None:
-#         return {'message': 'Error missing email or password'},400
-#     try:
-#         user = auth.create_user(
-#                email=email,
-#                password=password
-#         )
-#         return {'message': f'Successfully created user {user.uid}'},200
-#     except:
-#         return {'message': 'Error creating user'},400
         
 @app.route('/api/signup', methods=['POST'])
 def signup():
