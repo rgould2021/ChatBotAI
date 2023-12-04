@@ -28,6 +28,11 @@ export default function Home({ navigation }: HomeProps) {
     navigation.navigate('UpdateProfile');
   };
 
+  const goToChatScreen = () => {
+    navigation.navigate('ChatScreen');
+  };
+
+
   return (
     <LinearGradient colors={['#74C365', '#48B1BF']} style={styles.container}>
       <Image
@@ -37,6 +42,10 @@ export default function Home({ navigation }: HomeProps) {
       <Text style={styles.title}>Welcome to LifePath</Text>
       <Text style={styles.subtitle}>Start Exploring</Text>
       
+      <TouchableOpacity style={styles.button} onPress={goToChatScreen}>
+        <Text style={styles.buttonText}>Chatbot</Text>
+      </TouchableOpacity>
+
       <TouchableOpacity style={styles.button} onPress={goToAboutUs}>
         <Text style={styles.buttonText}>About Us</Text>
       </TouchableOpacity>
