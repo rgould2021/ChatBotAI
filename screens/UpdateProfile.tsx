@@ -10,7 +10,7 @@ type ProfileData = {
   profileImage: string | undefined;
 };
 
-export default function UpdateProfile(props: { navigation: { navigate: (arg0: string) => void; }; }) {
+export default function UpdateProfile() {
   const [profileData, setProfileData] = useState<ProfileData>({
     firstName: '',
     lastName: '',
