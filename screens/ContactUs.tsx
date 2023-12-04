@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Linking } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -11,21 +11,26 @@ type RootStackParamList = {
   ContactUs: undefined;
 };
 
-type HomeProps = {
+type ContactUsProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Home'>;
 };
 
-export default function Home({ navigation }: HomeProps) {
+export default function ContactUs({ navigation }: ContactUsProps) {
   const goToAboutUs = () => {
     navigation.navigate('AboutUs');
   };
 
-  const goToContactUs = () => {
-    navigation.navigate('ContactUs');
+  const goToChatScreen = () => {
+    navigation.navigate('ChatScreen');
   };
 
   const goToUpdateProfile = () => {
     navigation.navigate('UpdateProfile');
+  };
+
+  const makePhoneCall = async () => {
+    const phoneNumber = '15613339999';
+    await Linking.openURL(`tel:${phoneNumber}`);
   };
 
   return (
@@ -34,19 +39,17 @@ export default function Home({ navigation }: HomeProps) {
         source={require('../assets/images/LifePathLogo.png')} // Replace with your logo path
         style={styles.logo}
       />
-      <Text style={styles.title}>Welcome to LifePath</Text>
-      <Text style={styles.subtitle}>Start Exploring</Text>
-      
-      <TouchableOpacity style={styles.button} onPress={goToAboutUs}>
-        <Text style={styles.buttonText}>About Us</Text>
+      <Text style={styles.title}>Contact Us</Text>
+      <Text style={styles.subtitle}>Any questions? We're here for you!</Text>
+      <Text style={styles.subtitle}>24/7 Digital Chat Support</Text>
+      <TouchableOpacity style={styles.button} onPress={goToChatScreen}>
+        <Text style={styles.buttonText}>💬 Chat Now</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={goToContactUs}>
-        <Text style={styles.buttonText}>Contact Us</Text>
+      <TouchableOpacity style={styles.button} onPress={makePhoneCall}>
+        <Text style={styles.buttonText}>📞1 (561) 333-9999</Text>
       </TouchableOpacity>
-
-      <TouchableOpacity style={styles.button} onPress={goToUpdateProfile}>
-        <Text style={styles.buttonText}>Update Profile</Text>
+      <TouchableOpacity style={styles.button} onPress={makePhoneCall}>
+        <Text style={styles.buttonText}>📧 LifePathSupport@gmail.com</Text>
       </TouchableOpacity>
     </LinearGradient>
   );
@@ -80,7 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     alignItems: 'center',
     marginBottom: 15,
-    width: 200,
+    width: 275,
   },
   buttonText: {
     fontSize: 16,

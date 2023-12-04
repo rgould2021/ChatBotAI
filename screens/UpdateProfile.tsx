@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, TextInput, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { LinearGradient } from 'expo-linear-gradient';
 
 type ProfileData = {
   firstName: string;
@@ -52,7 +53,7 @@ export default function UpdateProfile(props: { navigation: { navigate: (arg0: st
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#74C365', '#48B1BF']} style={styles.container}>
       {profileData.profileImage ? (
         <Image source={{ uri: profileData.profileImage }} style={styles.profileImage} />
       ) : (
@@ -91,7 +92,7 @@ export default function UpdateProfile(props: { navigation: { navigate: (arg0: st
       <TouchableOpacity style={styles.button} onPress={handleUpdateProfile}>
         <Text style={styles.buttonText}>Update</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 }
 
@@ -100,15 +101,13 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#74C365', // Change this to the desired background color
-    paddingHorizontal: 20,
   },
   profileImage: {
     width: 200,
     height: 200,
     borderRadius: 100,
     marginBottom: 20,
-    resizeMode: 'cover', // Set resizeMode to 'cover' to fill the container without distortion
+    resizeMode: 'cover',
   },
   form: {
     width: '100%',
@@ -117,22 +116,22 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
-    backgroundColor: '#fff',
-    padding: 12,
+    backgroundColor: 'rgba(245, 245, 245, 0.6)', // Semi-transparent white
+    padding: 15,
     marginBottom: 15,
-    borderRadius: 5,
+    borderRadius: 30,
+    marginHorizontal: 10
   },
   button: {
-    backgroundColor: '#A9A9A9', // Change button color to gray
+    backgroundColor: 'rgba(245, 245, 245, 0.6)', // Semi-transparent white
     padding: 12,
     borderRadius: 5,
     alignItems: 'center',
     marginBottom: 15,
-    width: 200,
+    width: 275,
   },
   buttonText: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#fff',
   },
 });

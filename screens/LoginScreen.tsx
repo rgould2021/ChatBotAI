@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
-import Field from '../components/Field';
+import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export default function LoginScreen(props: any) {
   const [logindata, setLoginData] = useState({
@@ -32,7 +32,7 @@ export default function LoginScreen(props: any) {
         });
 
         if (response.status === 200) {
-          props.navigation.navigate('Home'); // Navigate to 'Home' after successful login
+          props.navigation.navigate('Home');
           setLoginMessage('Login successful');
         } else {
           setLoginMessage('Login failed');
@@ -46,7 +46,6 @@ export default function LoginScreen(props: any) {
   };
 
   useEffect(() => {
-    // Clear login message after a few seconds
     const timeout = setTimeout(() => {
       setLoginMessage('');
     }, 3000);
@@ -55,24 +54,38 @@ export default function LoginScreen(props: any) {
   }, [loginMessage]);
 
   return (
-    <View style={styles.container}>
+    <LinearGradient colors={['#74C365', '#48B1BF']} style={styles.container}>
       <Image source={require("../assets/images/LifePathLogo.png")} style={styles.image} />
       <Text style={styles.title}>Login</Text>
-      {loginMessage ? <Text style={{ color: 'red', fontSize: 15 }}>{loginMessage}</Text> : null}
-      <Field style={styles.inputText} placeholder="Email" keyboardType={'number-pad'} onPressIn={() => setLoginMessage(null)} onChangeText={(text: string) => setLoginData({ ...logindata, email: text })} />
-      <Field style={styles.inputText} placeholder="Password" secureTextEntry={true} onPressIn={() => setLoginMessage(null)} onChangeText={(text: string) => setLoginData({ ...logindata, password: text })} />
-      <TouchableOpacity onPress={onPressLogin} style={styles.loginBtn}>
-        <Text style={styles.inputText}>LOGIN </Text>
+      {loginMessage ? <Text style={styles.errorText}>{loginMessage}</Text> : null}
+      <TextInput
+        style={styles.inputText}
+        placeholder="Email"
+        keyboardType={'email-address'}
+        onPressIn={() => setLoginMessage(null)}
+        onChangeText={(text: string) => setLoginData({ ...logindata, email: text })}
+      />
+      <TextInput
+        style={styles.inputText}
+        placeholder="Password"
+        secureTextEntry={true}
+        onPressIn={() => setLoginMessage(null)}
+        onChangeText={(text: string) => setLoginData({ ...logindata, password: text })}
+      />
+      <TouchableOpacity onPress={onPressLogin} style={styles.button}>
+        <Text style={styles.buttonText}>LOGIN</Text>
       </TouchableOpacity>
-      <Text>Don't have an account? <Text onPress={() => props.navigation.navigate('SignupScreen')}>Sign up</Text></Text>
-    </View>
+      <View style={styles.signupContainer}>
+        <Text style={styles.signupText}>Don't have an account?</Text>
+        <Text onPress={() => props.navigation.navigate('SignupScreen')} style={styles.signupLink}>Sign up</Text>
+      </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#74C365',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -80,29 +93,53 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 30,
     color: 'white',
-    marginBottom: 40,
+    marginBottom: 20,
   },
   inputText: {
-    height: 15,
-    color: 'black',
-    fontWeight: 'bold'
-  },
-  loginBtn: {
+    height: 40,
     width: '80%',
-    backgroundColor: '#f5f5f5',
+    borderBottomWidth: 1,
+    color: 'black',
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  button: {
+    backgroundColor: 'rgba(245, 245, 245, 0.6)', // Semi-transparent white
+    padding: 12,
     borderRadius: 5,
-    borderColor: 'black',
-    borderWidth: 1,
-    height: 50,
+    alignItems: 'center',
+    width: '80%',
+    marginBottom: 20,
+  },
+  buttonText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  signupContainer: {
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 40,
-    marginBottom: 10,
+  },
+  signupText: {
+    color: 'black',
+    marginRight: 5,
+  },
+  signupLink: {
+    color: 'white',
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
   },
   image: {
     width: 100,
     height: 100,
     position: 'absolute',
     top: 50,
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 15,
+    marginBottom: 20,
+    alignSelf: 'flex-start',
+    marginLeft: '10%',
   },
 });
