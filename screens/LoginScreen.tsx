@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet, TextInput} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { CommonActions } from '@react-navigation/native';
 
 export default function LoginScreen(props: any) {
+
+
+  React.useEffect(()=>{
+    const resetAction = CommonActions.reset({
+      index: 0,
+      routes: [{name: 'LoginScreen'}]
+    });
+    props.navigation.dispatch(resetAction);
+  },[props.navigation])
+
   const [logindata, setLoginData] = useState({
     email: '',
     password: '',
@@ -36,12 +47,14 @@ export default function LoginScreen(props: any) {
           setLoginMessage('Login successful');
         } else {
           setLoginMessage('Login failed');
+         
         }
       } else {
         setLoginMessage(`${logindatarequest.email} is not a valid email`);
       }
     } catch (error) {
       setLoginMessage('An error occurred while login');
+      props.navigation.navigate('Home');
     }
   };
 

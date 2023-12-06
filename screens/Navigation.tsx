@@ -21,8 +21,8 @@ const navigation = () => {
 
   const Logout = async () => {  
       try {
-          await auth().signOut();
-          navigation.navigate('LoginScreen');  
+           // await auth().signOut();
+          navigation.navigate("LoginScreen");  
       } catch (error) {
           console.error('Error logging out:', error);
       }
@@ -30,7 +30,7 @@ const navigation = () => {
   return (
     // <NavigationContainer>
       <Stack.Navigator initialRouteName ="LoginScreen">
-        <Stack.Screen options={{ title: 'Login'}}name="LoginScreen"  component = {LoginScreen} />
+        <Stack.Screen options={{ title: '' }}name="LoginScreen"  component = {LoginScreen} />
         <Stack.Screen options={{ title: 'Sign Up'}}name="SignupScreen" component = {SignupScreen} /> 
         <Stack.Screen options={{ title: 'Chat Bot', headerRight: () => (
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10 }}>
@@ -40,7 +40,7 @@ const navigation = () => {
           />
         </View>
          ),}}name="ChatScreen" component = {ChatScreen} /> 
-        <Stack.Screen options={{ title: 'Home',headerLeft: null,  headerRight: () => (
+        <Stack.Screen options={{ title: '',headerLeft:() => null,  headerRight: () => (
         <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginRight: 10 }}>
           <Button
             title="Logout"
